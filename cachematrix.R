@@ -8,7 +8,7 @@ makeCacheMatrix <- function(x = matrix()) {
   
     inv <- NULL # set inverse matrix to NULL if it doesn't exist 
     
-  # set(): function to push the matrix and its inverse to cache    
+  # set(): store the matrix data and NULL for matrix inverse   
     set <- function(y) {
       x <<- y
       inv <<- NULL
@@ -40,9 +40,9 @@ cacheSolve <- function(x, ...) {
     inv <- x$getInv() 
     
   # if the inverse matrix was already calculated and cached, return the cached value  
-    if(!is.null(m)) {
+    if(!is.null(inv) ){
       message("getting cached data")
-      return(m) 
+      return(inv) 
     }
   
   # if the inverse matrix hasn't been calculated, get the matrix data
@@ -57,3 +57,24 @@ cacheSolve <- function(x, ...) {
   # and return the calculated inverse matrix inv
     inv
 }
+
+###       Function test case example:
+# x <- matrix(data = 1:4, nrow = 2, ncol = 2) 
+# solve(x) gives:      [,1] [,2]
+              # [1,]   -2    1.5
+              # [2,]    1   -0.5
+# create "matrix" object with data from x: 
+          #  obj_x <- makeCacheMatrix(x) 
+          #  obj_x$getInv() returned NULL 
+# first call of cacheSolve for obj_x, inverse matrix was calculated:
+          #  > cacheSolve(obj_x)
+        #     [,1] [,2]
+        #[1,]   -2  1.5
+        #[2,]    1 -0.5
+# second call if cacheSolve for obj_x, value of inverse matrix was gotten from cached data:
+          # > cacheSolve(obj_x)
+          #  getting cached data
+          #     [,1] [,2]
+          #[1,]   -2  1.5
+          #[2,]    1 -0.5
+
